@@ -34,6 +34,7 @@ public class Miniexplorador {
 
         while (true) {
             System.out.println();
+            assert dir != null;
             System.out.println("Contenido de: " + dir.toAbsolutePath());
             listDirectory(dir);
 
@@ -57,7 +58,6 @@ public class Miniexplorador {
                         dir = askDirectory();
                         if (dir == null) {
                             System.out.println("No se cambió el directorio.");
-                            dir = dir; // keep previous
                         }
                         break;
                     case "5":
