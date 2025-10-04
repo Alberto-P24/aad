@@ -2,14 +2,15 @@ package com.apinpla2605.aad;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Scanner;
 
 @SpringBootApplication
+@Slf4j
 public class Miniexplorador implements CommandLineRunner {
 
     private static final Scanner sc = new Scanner(System.in);
@@ -20,12 +21,12 @@ public class Miniexplorador implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        System.out.println("=== MiniExplorador de ficheros ===");
+        log.info("=== MiniExplorador de ficheros ===");
         File dir = pedirDirectorio();
         if (dir == null) return;
 
         while (true) {
-            System.out.println("\nContenido de: " + dir.getAbsolutePath());
+            log.info("\nContenido de: " + dir.getAbsolutePath());
             listarDirectorio(dir);
 
             mostrarMenu();
@@ -40,11 +41,11 @@ public class Miniexplorador implements CommandLineRunner {
                     if (nuevo != null) {
                         dir = nuevo; // solo cambiar si el usuario introduce algo válido
                     } else {
-                        System.out.println("No se cambió el directorio.");
+                        log.info("No se cambió el directorio.");
                     }
                     break;
-                case "5": System.out.println("Saliendo..."); return;
-                default: System.out.println("Opción no válida");
+                case "5": log.info("Saliendo..."); return;
+                default: log.info("Opción no válida");
             }
 
         }
@@ -53,17 +54,17 @@ public class Miniexplorador implements CommandLineRunner {
     // Pide un directorio válido y lo devuelve
     private static File pedirDirectorio() {
         while (true) {
-            System.out.print("Ruta del directorio: ");
+            log.info("Ruta del directorio: ");
             String ruta = sc.nextLine().trim();
             if (ruta.isEmpty()) return null;
 
             File f = new File(ruta);
             if (!f.exists()) {
-                System.out.println("El directorio no existe.");
+                log.info("El directorio no existe.");
             } else if (!f.isDirectory()) {
-                System.out.println("La ruta no es un directorio.");
+                log.info("La ruta no es un directorio.");
             } else if (!f.canRead()) {
-                System.out.println("No tienes permisos de lectura.");
+                log.info("No tienes permisos de lectura.");
             } else {
                 return f; // Directorio válido
             }
@@ -74,98 +75,98 @@ public class Miniexplorador implements CommandLineRunner {
     private static void listarDirectorio(File dir) {
         File[] lista = dir.listFiles();
         if (lista == null) {
-            System.out.println("No se pudo leer el directorio.");
+            log.info("No se pudo leer el directorio.");
             return;
         }
-        System.out.printf("%-40s %-10s %-25s %-10s%n", "Nombre", "Tipo", "Última modificación", "Tamaño");
+        log.info("%-40s %-10s %-25s %-10s%n", "Nombre", "Tipo", "Última modificación", "Tamaño");
         for (File f : lista) {
             String tipo = f.isDirectory() ? "<DIR>" : "<FILE>";
             String fecha = new Date(f.lastModified()).toString();
             String size = f.isDirectory() ? "-" : f.length() + "B";
-            System.out.printf("%-40s %-10s %-25s %-10s%n", f.getName(), tipo, fecha, size);
+            log.info("%-40s %-10s %-25s %-10s%n", f.getName(), tipo, fecha, size);
         }
     }
 
     // Muestra menú de opciones
     private static void mostrarMenu() {
-        System.out.println("\nMenú:");
-        System.out.println("1) Crear fichero vacío");
-        System.out.println("2) Mover fichero");
-        System.out.println("3) Borrar fichero");
-        System.out.println("4) Cambiar de directorio");
-        System.out.println("5) Salir");
-        System.out.print("Opción: ");
+        log.info("\nMenú:");
+        log.info("1) Crear fichero vacío");
+        log.info("2) Mover fichero");
+        log.info("3) Borrar fichero");
+        log.info("4) Cambiar de directorio");
+        log.info("5) Salir");
+        log.info("Opción: ");
     }
 
     // Crear un nuevo fichero vacío
     private static void crearFichero(File dir) {
-        System.out.print("Nombre del nuevo fichero: ");
+        log.info("Nombre del nuevo fichero: ");
         String nombre = sc.nextLine().trim();
         if (nombre.isEmpty()) {
-            System.out.println("Nombre vacío. Cancelado.");
+            log.info("Nombre vacío. Cancelado.");
             return;
         }
         File f = new File(dir, nombre);
         try {
             if (f.exists()) {
-                System.out.println("Ya existe un fichero con ese nombre.");
+                log.info("Ya existe un fichero con ese nombre.");
             } else if (f.createNewFile()) {
-                System.out.println("Fichero creado: " + f.getAbsolutePath());
+                log.info("Fichero creado: " + f.getAbsolutePath());
             } else {
-                System.out.println("No se pudo crear el fichero.");
+                log.info("No se pudo crear el fichero.");
             }
         } catch (IOException e) {
-            System.out.println("Error al crear fichero: " + e.getMessage());
+            log.info("Error al crear fichero: " + e.getMessage());
         }
     }
 
     // Mover un fichero
     private static void moverFichero() {
-        System.out.print("Ruta del fichero a mover: ");
+        log.info("Ruta del fichero a mover: ");
         String srcPath = sc.nextLine().trim();
-        if (srcPath.isEmpty()) { System.out.println("Ruta inválida."); return; }
+        if (srcPath.isEmpty()) { log.info("Ruta inválida."); return; }
 
         File origen = new File(srcPath);
-        if (!origen.exists()) { System.out.println("El fichero no existe."); return; }
+        if (!origen.exists()) { log.info("El fichero no existe."); return; }
 
-        System.out.print("Ruta destino: ");
+        log.info("Ruta destino: ");
         String dstPath = sc.nextLine().trim();
-        if (dstPath.isEmpty()) { System.out.println("Ruta inválida."); return; }
+        if (dstPath.isEmpty()) { log.info("Ruta inválida."); return; }
 
         File destino = new File(dstPath);
         if (destino.isDirectory()) destino = new File(destino, origen.getName());
 
         if (origen.renameTo(destino)) {
-            System.out.println("Fichero movido correctamente.");
+            log.info("Fichero movido correctamente.");
         } else {
-            System.out.println("No se pudo mover el fichero.");
+            log.info("No se pudo mover el fichero.");
         }
     }
 
     // Borrar un fichero (con confirmación)
     private static void borrarFichero() {
-        System.out.print("Ruta del fichero a borrar: ");
+        log.info("Ruta del fichero a borrar: ");
         String path = sc.nextLine().trim();
-        if (path.isEmpty()) { System.out.println("Ruta inválida."); return; }
+        if (path.isEmpty()) { log.info("Ruta inválida."); return; }
 
         File f = new File(path);
-        if (!f.exists()) { System.out.println("El fichero no existe."); return; }
+        if (!f.exists()) { log.info("El fichero no existe."); return; }
 
-        System.out.print("Escribe SI para confirmar borrado: ");
+        log.info("Escribe SI para confirmar borrado: ");
         if (!"SI".equalsIgnoreCase(sc.nextLine().trim())) {
-            System.out.println("Cancelado por el usuario.");
+            log.info("Cancelado por el usuario.");
             return;
         }
 
         if (f.isDirectory() && f.listFiles() != null && f.listFiles().length > 0) {
-            System.out.println("El directorio no está vacío. No se borra.");
+            log.info("El directorio no está vacío. No se borra.");
             return;
         }
 
         if (f.delete()) {
-            System.out.println("Fichero borrado.");
+            log.info("Fichero borrado.");
         } else {
-            System.out.println("No se pudo borrar.");
+            log.info("No se pudo borrar.");
         }
     }
 }
