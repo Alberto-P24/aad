@@ -53,7 +53,7 @@ public class Miniexplorador implements CommandLineRunner {
     // Pide un directorio válido y lo devuelve
     private static File pedirDirectorio() {
         while (true) {
-            System.out.print("Ruta del directorio (ENTER para salir): ");
+            System.out.print("Ruta del directorio: ");
             String ruta = sc.nextLine().trim();
             if (ruta.isEmpty()) return null;
 
