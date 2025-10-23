@@ -30,6 +30,27 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- Core de Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.19.2</version>
+		</dependency>
+
+		<!-- Databind (serialización/ deserialización) -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.19.2</version>
+		</dependency>
+
+		<!-- XML -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.19.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
@@ -56,5 +77,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
