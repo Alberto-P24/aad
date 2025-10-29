@@ -1,5 +1,5 @@
 package com.apinpla2605.aad.Actividad_1_3;
-//
+
 /**
  * Clase que representa un alumno.
  * Contiene información básica: identificador, nombre y nota.
