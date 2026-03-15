@@ -53,7 +53,6 @@ public class Application implements CommandLineRunner {
         int countEnrollments = managementService.countEnrollments(luna.getId());
         log.info("{} módulos matriculados para el alumno {}", countEnrollments, luna.getName());
 
-        // PRUEBA DE BORRADO Y ROLLBACK (Paso 7)
         studentRepository.delete(luna);
         log.info("Alumno {} eliminado lógicamente en la sesión", luna.getName());
 
